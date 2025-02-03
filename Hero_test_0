@@ -1,0 +1,159 @@
+import os
+
+import pygame
+from screeninfo import get_monitors
+
+pygame.init()
+
+monitor_info = get_monitors()[0]
+width = monitor_info.width
+height = monitor_info.height
+game = True
+screen_main = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
+
+FPS = 60
+clock = pygame.time.Clock()
+
+
+def way(files):
+    fullname = os.path.join("data", *files)
+    if not os.path.isfile(fullname):
+        print(f"Файл '{fullname}' не найден")
+        import sys
+        sys.exit()
+    return fullname
+
+
+def load_image(files, size=None, colorkey=None):
+    fullname = way(files)
+    image = pygame.image.load(fullname)
+
+    if colorkey is not None:
+
+        if colorkey == -1:
+            colorkey = image.get_at((0, 0))
+        image.set_colorkey(colorkey)
+
+    else:
+        image = image.convert_alpha()
+
+    if size is not None:
+        image = pygame.transform.scale(image, size)
+
+    return image
+
+
+class Hero(pygame.sprite.Sprite):
+    images = {
+        "w": (
+            load_image(("hero", "heroes_w0.png")),
+            load_image(("hero", "heroes_w1.png")),
+            load_image(("hero", "heroes_w2.png"))
+        ),
+        "a": (
+            load_image(("hero", "heroes_a0.png")),
+            load_image(("hero", "heroes_a1.png")),
+            load_image(("hero", "heroes_a2.png"))
+        ),
+        "s": (
+            load_image(("hero", "heroes_s0.png")),
+            load_image(("hero", "heroes_s1.png")),
+            load_image(("hero", "heroes_s2.png"))
+        ),
+        "d": (
+            load_image(("hero", "heroes_d0.png")),
+            load_image(("hero", "heroes_d1.png")),
+            load_image(("hero", "heroes_d2.png"))
+        ),
+    }
+
+    def __init__(self, x, y, *group):
+        super().__init__(*group)
+        self.image = Hero.images["s"][0]
+        self.rect = self.image.get_rect()
+        self.rect.x = x
+        self.rect.y = y
+        self.v = 180
+
+        self.duration = "s"
+        self.step = 0
+
+    def update(self, *args):
+        if args:
+            w_key = args[0][ord("w")]
+            a_key = args[0][ord("a")]
+            s_key = args[0][ord("s")]
+            d_key = args[0][ord("d")]
+
+            pix = self.v / FPS
+
+            if w_key ^ s_key or a_key ^ d_key:
+                self.step = (self.step + 1) % 50
+                self.image = Hero.images[self.duration][self.step // 25 + 1]
+
+            if s_key and not w_key:
+                if self.duration != "s":
+                    self.step = 0
+                    self.duration = "s"
+                if d_key and not a_key:
+                    pix = self.v / (2 ** 0.5) / FPS
+                    self.rect.x = min(self.rect.x + pix, width - self.rect.width)
+                if a_key and not d_key:
+                    pix = self.v / (2 ** 0.5) / FPS
+                    self.rect.x = max(self.rect.x - pix, 0)
+                self.rect.y = min(self.rect.y + pix, height - self.rect.height)
+            elif w_key and not s_key:
+                if self.duration != "w":
+                    self.step = 0
+                    self.duration = "w"
+                if d_key and not a_key:
+                    pix = self.v / (2 ** 0.5) / FPS
+                    self.rect.x = min(self.rect.x + pix, width - self.rect.width)
+                if a_key and not d_key:
+                    pix = self.v / (2 ** 0.5) / FPS
+                    self.rect.x = max(self.rect.x - pix, 0)
+                self.rect.y = max(self.rect.y - pix, 0)
+            elif d_key and not a_key:
+                if self.duration != "d":
+                    self.step = 0
+                    self.duration = "d"
+                self.rect.x = min(self.rect.x + pix, width - self.rect.width)
+            elif a_key and not d_key:
+                if self.duration != "a":
+                    self.step = 0
+                    self.duration = "a"
+                self.rect.x = max(self.rect.x - pix, 0)
+            else:
+                self.image = Hero.images[self.duration][0]
+                self.step = 0
+
+
+# monitor_info = get_monitors()[0]
+# width = monitor_info.width
+# height = monitor_info.height
+#
+# game = True
+# screen_main = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
+# ds
+# FPS = 60
+# clock = pygame.time.Clock()
+
+all_sprites = pygame.sprite.Group()
+Hero(100, 100, all_sprites)
+
+while game:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            game = False
+
+    for sprite in all_sprites:
+        sprite.update(pygame.key.get_pressed())
+
+    screen_main.fill("black")
+
+    all_sprites.draw(screen_main)
+
+    pygame.display.flip()
+    clock.tick(FPS)
+
+pygame.quit()
