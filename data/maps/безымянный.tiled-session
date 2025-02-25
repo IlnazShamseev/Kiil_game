@@ -1,0 +1,71 @@
+{
+    "Map/SizeTest": {
+        "height": 4300,
+        "width": 2
+    },
+    "activeFile": "безымянный.tmx",
+    "console.history": [
+        "йцу",
+        "clear"
+    ],
+    "expandedProjectPaths": [
+        "."
+    ],
+    "file.lastUsedOpenFilter": "Все файлы (*)",
+    "fileStates": {
+        "cb9c43bc61860f362ef667f07cd2bc67.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "map.tmx": {
+            "scale": 0.75,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 875.3333333333333,
+                "y": 815.3333333333333
+            }
+        },
+        "qwe.tsx": {
+            "scaleInDock": 0.75,
+            "scaleInEditor": 1
+        },
+        "безымянный.tmx": {
+            "scale": 0.25,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 1052,
+                "y": 1658
+            }
+        },
+        "ой.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        }
+    },
+    "last.imagePath": "C:/Users/Ilnaz/Downloads",
+    "map.height": 51,
+    "map.lastUsedFormat": "tmx",
+    "map.tileHeight": 32,
+    "map.tileWidth": 32,
+    "map.width": 51,
+    "openFiles": [
+        "qwe.tsx",
+        "map.tmx",
+        "безымянный.tmx"
+    ],
+    "project": "безымянный.tiled-project",
+    "recentFiles": [
+        "qwe.tsx",
+        "map.tmx",
+        "безымянный.tmx",
+        "cb9c43bc61860f362ef667f07cd2bc67.tsx",
+        "ой.tsx"
+    ],
+    "tileset.lastUsedFormat": "tsx",
+    "tileset.tileSize": {
+        "height": 32,
+        "width": 32
+    },
+    "tileset.transparentColor": "#000000",
+    "tileset.useTransparentColor": true
+}
